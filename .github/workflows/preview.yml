@@ -1,0 +1,45 @@
+name: Проверка и PR-превью
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+concurrency:
+  group: preview-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Получить код
+        uses: actions/checkout@v6.0.2
+
+      - name: Подготовить Node.js
+        if: github.event.action != 'closed'
+        uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Проверить правила
+        if: github.event.action != 'closed'
+        run: npm test
+
+      - name: Собрать статическую игру
+        if: github.event.action != 'closed'
+        run: npm run build
+
+      - name: Опубликовать или удалить превью
+        uses: rossjrw/pr-preview-action@v1.8.1
+        with:
+          source-dir: ./dist/
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+          action: auto
+          wait-for-pages-deployment: true
+          qr-code: false

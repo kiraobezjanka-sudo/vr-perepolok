@@ -1,0 +1,40 @@
+name: Публикация игры
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: production-pages
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Получить код
+        uses: actions/checkout@v6.0.2
+
+      - name: Подготовить Node.js
+        uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Проверить правила
+        run: npm test
+
+      - name: Собрать статическую игру
+        run: npm run build
+
+      - name: Опубликовать production
+        uses: JamesIves/github-pages-deploy-action@v4.8.0
+        with:
+          folder: dist
+          branch: gh-pages
+          clean-exclude: pr-preview
+          force: false

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#6c4cff" />
+    <meta name="description" content="Смешная минутная VR-головоломка из трёх уровней." />
+    <title>VR-переполох</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="VR-переполох, в начало">
+          <span class="brand-mark">VR</span>
+          <span>ПЕРЕПОЛОХ</span>
+        </a>
+        <div class="hud" aria-live="polite">
+          <span class="level-pill" id="level-pill">Уровень 0 / 3</span>
+          <span class="timer" id="timer">01:00</span>
+          <button class="icon-button" id="pause-button" type="button" aria-label="Пауза" title="Пауза (P)">Ⅱ</button>
+        </div>
+      </header>
+
+      <section class="stage" id="stage" aria-live="polite"></section>
+
+      <footer class="footer">
+        <span><kbd>P</kbd> пауза</span>
+        <span id="level-hint">Мышь + клавиатура</span>
+        <button class="sound-toggle" id="sound-button" type="button" aria-pressed="true">Звук: вкл</button>
+      </footer>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
